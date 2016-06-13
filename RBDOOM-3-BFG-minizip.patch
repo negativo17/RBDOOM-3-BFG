@@ -1,0 +1,51 @@
+diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/CMakeLists.txt RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/CMakeLists.txt
+--- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/CMakeLists.txt	2016-01-23 12:09:34.464322514 +0100
++++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/CMakeLists.txt	2016-01-23 12:29:22.860753091 +0100
+@@ -1437,6 +1437,7 @@
+ 		dbghelp
+ 		#eaxguid
+ 		iphlpapi
++        minizip
+ 		winmm
+ 		wsock32.lib
+ 		${OpenAL_LIBRARIES}
+@@ -1605,6 +1606,7 @@
+ 		target_link_libraries(RBDoom3BFG
+ 			idlib
+ 			${OPENGL_LIBRARIES}
++            minizip
+ 			pthread
+ 			${RT_LIBRARY}
+ 			${SDLx_LIBRARY}
+diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Unzip.h RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Unzip.h
+--- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Unzip.h	2016-01-23 12:09:34.482322754 +0100
++++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Unzip.h	2016-01-23 12:10:50.472335391 +0100
+@@ -37,14 +37,6 @@
+ #ifndef __UNZIP_H__
+ #define __UNZIP_H__
+ 
+-#include "../libs/zlib/minizip/unzip.h"
+-
+-/*
+- * DG: all unzip code has been moved to minizip/
+- *     when being updated to minizip 1.1 (instead of the previously used minizip 0.15beta from 1998)
+- *     This update brings zip64 support (untested) and much cleaner code.
+- *     Furthermore, updates to future minizip should be much easier now, as my changes to the
+- *     original source files from minizip are quite small.
+- */
++#include <minizip/unzip.h>
+ 
+ #endif /* __UNZIP_H__ */
+diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Zip.h RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Zip.h
+--- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Zip.h	2016-01-23 12:09:34.482322754 +0100
++++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Zip.h	2016-01-23 12:11:14.856660335 +0100
+@@ -30,8 +30,7 @@
+ 
+ #include <zlib.h>
+ 
+-// DG: all the zip access stuff from minizip is now in minizip/zip.h
+-#include "libs/zlib/minizip/zip.h"
++#include <minizip/zip.h>
+ 
+ 
+ /*
