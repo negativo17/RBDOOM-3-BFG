@@ -1,0 +1,24 @@
+diff -Naur RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/idlib/precompiled.h RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/idlib/precompiled.h
+--- RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/idlib/precompiled.h	2017-01-09 14:33:24.164178943 +0100
++++ RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/idlib/precompiled.h	2017-01-09 14:56:30.490384832 +0100
+@@ -105,7 +105,7 @@
+ #include "../ui/UserInterface.h"
+ 
+ // RB: required for SWF extensions
+-#include "../libs/rapidjson/include/rapidjson/document.h"
++#include <rapidjson/document.h>
+ 
+ #include "../swf/SWF.h"
+ 
+diff -Naur RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/swf/SWF_Load.cpp RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/swf/SWF_Load.cpp
+--- RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/swf/SWF_Load.cpp	2017-01-09 14:33:24.266180948 +0100
++++ RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/swf/SWF_Load.cpp	2017-01-09 14:56:50.221771751 +0100
+@@ -30,7 +30,7 @@
+ #include "precompiled.h"
+ #include "../renderer/Font.h"
+ #include "../renderer/Image.h"
+-//#include "../../libs/rapidjson/include/rapidjson/document.h"
++//#include <include/rapidjson/document.h>
+ 
+ using namespace rapidjson;
+ 

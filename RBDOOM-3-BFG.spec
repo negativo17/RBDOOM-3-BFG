@@ -15,6 +15,7 @@ Patch1:         %{name}-noexit.patch
 Patch2:         %{name}-png.patch
 Patch3:         %{name}-minizip.patch
 Patch4:         %{name}-README.patch
+Patch5:         %{name}-rapidjson.patch
 
 # Generic provider for Doom 3 BFG engine based games
 Provides:       doom3bfg-engine = 1.1401
@@ -31,6 +32,7 @@ BuildRequires:  libjpeg-turbo-devel
 BuildRequires:  libpng-devel
 BuildRequires:  minizip-devel
 BuildRequires:  openal-soft-devel
+BuildRequires:  rapidjson-devel
 BuildRequires:  zlib-devel
 BuildRequires:  SDL2-devel
 
@@ -45,10 +47,11 @@ the original game-play.
 %patch1 -p1
 
 # Remove bundled libraries
-rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,zlib}
+rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 cp %{SOURCE1} ./Fedora-README.txt
 
