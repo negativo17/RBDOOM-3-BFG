@@ -1,7 +1,7 @@
-diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/CMakeLists.txt RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/CMakeLists.txt
---- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/CMakeLists.txt	2016-01-23 12:09:34.464322514 +0100
-+++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/CMakeLists.txt	2016-01-23 12:29:22.860753091 +0100
-@@ -1437,6 +1437,7 @@
+diff -Naur RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/CMakeLists.txt RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/CMakeLists.txt
+--- RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/CMakeLists.txt	2017-01-09 14:33:24.150178668 +0100
++++ RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/CMakeLists.txt	2017-01-09 14:33:56.436813218 +0100
+@@ -1342,6 +1342,7 @@
  		dbghelp
  		#eaxguid
  		iphlpapi
@@ -9,7 +9,7 @@ diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/CMakeLi
  		winmm
  		wsock32.lib
  		${OpenAL_LIBRARIES}
-@@ -1605,6 +1606,7 @@
+@@ -1510,6 +1511,7 @@
  		target_link_libraries(RBDoom3BFG
  			idlib
  			${OPENGL_LIBRARIES}
@@ -17,9 +17,9 @@ diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/CMakeLi
  			pthread
  			${RT_LIBRARY}
  			${SDLx_LIBRARY}
-diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Unzip.h RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Unzip.h
---- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Unzip.h	2016-01-23 12:09:34.482322754 +0100
-+++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Unzip.h	2016-01-23 12:10:50.472335391 +0100
+diff -Naur RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/framework/Unzip.h RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/framework/Unzip.h
+--- RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/framework/Unzip.h	2017-01-09 14:33:24.162178904 +0100
++++ RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/framework/Unzip.h	2017-01-09 14:33:56.436813218 +0100
 @@ -37,14 +37,6 @@
  #ifndef __UNZIP_H__
  #define __UNZIP_H__
@@ -36,9 +36,9 @@ diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framewo
 +#include <minizip/unzip.h>
  
  #endif /* __UNZIP_H__ */
-diff -Naur RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Zip.h RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Zip.h
---- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/neo/framework/Zip.h	2016-01-23 12:09:34.482322754 +0100
-+++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/neo/framework/Zip.h	2016-01-23 12:11:14.856660335 +0100
+diff -Naur RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/framework/Zip.h RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/framework/Zip.h
+--- RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484.old/neo/framework/Zip.h	2017-01-09 14:33:24.162178904 +0100
++++ RBDOOM-3-BFG-80df3182f1db17c282306f4095a75637db86f484/neo/framework/Zip.h	2017-01-09 14:33:56.437813238 +0100
 @@ -30,8 +30,7 @@
  
  #include <zlib.h>
