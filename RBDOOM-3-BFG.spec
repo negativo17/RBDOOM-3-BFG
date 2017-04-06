@@ -4,7 +4,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.1.0
-Release:        5%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        6%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -16,6 +16,8 @@ Patch2:         %{name}-png.patch
 Patch3:         %{name}-minizip.patch
 Patch4:         %{name}-README.patch
 Patch5:         %{name}-rapidjson.patch
+
+ExcludeArch:    ppc64le
 
 # Generic provider for Doom 3 BFG engine based games
 Provides:       doom3bfg-engine = 1.1401
@@ -100,6 +102,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Thu Apr 06 2017 Simone Caronni <negativo17@gmail.com> - 1.1.0-6.20161018git80df318
+- Exclude ppc64le.
+
 * Thu Apr 06 2017 Simone Caronni <negativo17@gmail.com> - 1.1.0-5.20161018git80df318
 - Remove bundled rapidjson.
 
