@@ -1,10 +1,10 @@
-%global commit0 81dc65119d1404167bfbe9830f5bf9f0a770c0e6
-%global date 20170421
+%global commit0 c8e3cd9fe2f4d3e7604f0ca1ead51a3b2a91ca79
+%global date 20170903
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           RBDOOM-3-BFG
 Version:        1.1.0
-Release:        7%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        8%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -66,6 +66,7 @@ echo "#define ID_RETAIL" >> neo/framework/Licensee.h
 LDFLAGS='-lpthread'
 # Passing a fake build name avoids default CMAKE_BUILD_TYPE="RelWithDebInfo"
 # which has hard coded GCC optimizations.
+
 %cmake \
     -DCMAKE_BUILD_TYPE=Fedora \
     -DFFMPEG=ON \
@@ -102,6 +103,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Mon Oct 02 2017 Simone Caronni <negativo17@gmail.com> - 1.1.0-8.20170903gitc8e3cd9
+- Update to latest snapshot.
+
 * Thu May 04 2017 Simone Caronni <negativo17@gmail.com> - 1.1.0-7.20170421git81dc651
 - Update to latest snapshot.
 
