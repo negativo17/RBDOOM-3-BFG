@@ -1,10 +1,10 @@
-%global commit0 c8e3cd9fe2f4d3e7604f0ca1ead51a3b2a91ca79
-%global date 20170903
+%global commit0 435637606d65efe1098683d133f348eb06f8b852
+%global date 20181013
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           RBDOOM-3-BFG
-Version:        1.1.0
-Release:        8%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Version:        1.2.0
+Release:        1%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -25,10 +25,11 @@ Provides:       doom3bfg-engine = 1.1401
 # Contains a very old and unknown version of timidity to play audio in original
 # Doom I & II.
 Provides:       bundled(timidity) = 0.2i
+Provides:       bundled(libbinkdec)
 
+BuildRequires:  gcc-c++
 BuildRequires:  chrpath
 BuildRequires:  cmake
-BuildRequires:  ffmpeg-devel
 BuildRequires:  glew-devel
 BuildRequires:  libjpeg-turbo-devel
 BuildRequires:  libpng-devel
@@ -45,15 +46,10 @@ present in the original DOOM 3 will be fixed (when identified) without altering
 the original game-play.
 
 %prep
-%setup -qn %{name}-%{commit0}
-%patch1 -p1
+%autosetup -p1 -n %{name}-%{commit0}
 
 # Remove bundled libraries
 rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 cp %{SOURCE1} ./Fedora-README.txt
 
@@ -69,7 +65,7 @@ LDFLAGS='-lpthread'
 
 %cmake \
     -DCMAKE_BUILD_TYPE=Fedora \
-    -DFFMPEG=ON \
+    -DBINKDEC=ON \
     -DOPENAL=ON \
     -DUSE_PRECOMPILED_HEADERS=OFF \
     -DUSE_SYSTEM_LIBGLEW=ON \
@@ -77,7 +73,7 @@ LDFLAGS='-lpthread'
     -DUSE_SYSTEM_LIBPNG=ON \
     -DUSE_SYSTEM_ZLIB=ON \
     neo
-make %{?_smp_mflags}
+%make_build
 
 %post
 /usr/sbin/alternatives --install %{_bindir}/doom3bfg-engine doom3bfg-engine %{_bindir}/RBDoom3BFG 10
@@ -96,13 +92,15 @@ install -D -p -m 0755 idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
 chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 
 %files
-%{!?_licensedir:%global license %%doc}
 %license COPYING.txt
 %doc Fedora-README.txt README.txt
 %{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Sun Jan 06 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-1.20181013git4356376
+- Update to latest snapshot.
+
 * Mon Oct 02 2017 Simone Caronni <negativo17@gmail.com> - 1.1.0-8.20170903gitc8e3cd9
 - Update to latest snapshot.
 

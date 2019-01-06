@@ -1,6 +1,7 @@
---- RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef.old/README.txt	2016-01-23 12:09:34.441322208 +0100
-+++ RBDOOM-3-BFG-1275984ab83d88a58f742640907fa33762fe01ef/README.txt	2016-01-23 12:23:03.901875767 +0100
-@@ -404,58 +404,6 @@
+diff -Naur RBDOOM-3-BFG-435637606d65efe1098683d133f348eb06f8b852.old/README.txt RBDOOM-3-BFG-435637606d65efe1098683d133f348eb06f8b852/README.txt
+--- RBDOOM-3-BFG-435637606d65efe1098683d133f348eb06f8b852.old/README.txt	2019-01-06 17:21:21.097807026 +0100
++++ RBDOOM-3-BFG-435637606d65efe1098683d133f348eb06f8b852/README.txt	2019-01-06 17:23:20.900028175 +0100
+@@ -429,58 +429,6 @@
  You are solely responsible for obtaining from the copyright holder a license for such code and complying with the applicable license terms.
  
  
@@ -59,7 +60,7 @@
  Base64 implementation
  ---------------------------------------------------------------------------
  neo/idlib/Base64.cpp
-@@ -489,34 +437,6 @@
+@@ -514,34 +462,6 @@
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
