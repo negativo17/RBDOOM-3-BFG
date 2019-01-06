@@ -15,7 +15,6 @@ Patch1:         %{name}-noexit.patch
 Patch2:         %{name}-png.patch
 Patch3:         %{name}-minizip.patch
 Patch4:         %{name}-README.patch
-Patch5:         %{name}-rapidjson.patch
 
 ExcludeArch:    ppc64le
 
@@ -71,6 +70,7 @@ LDFLAGS='-lpthread'
     -DUSE_SYSTEM_LIBGLEW=ON \
     -DUSE_SYSTEM_LIBJPEG=ON \
     -DUSE_SYSTEM_LIBPNG=ON \
+    -DUSE_SYSTEM_RAPIDJASON=ON \
     -DUSE_SYSTEM_ZLIB=ON \
     neo
 %make_build
