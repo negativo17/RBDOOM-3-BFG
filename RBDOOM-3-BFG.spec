@@ -4,7 +4,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.2.0
-Release:        1%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        2%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -32,7 +32,11 @@ BuildRequires:  cmake
 BuildRequires:  glew-devel
 BuildRequires:  libjpeg-turbo-devel
 BuildRequires:  libpng-devel
+%if 0%{?fedora} >= 30 || 0%{?rhel} >= 8
+BuildRequires:  minizip-compat-devel
+%else
 BuildRequires:  minizip-devel
+%endif
 BuildRequires:  openal-soft-devel
 BuildRequires:  rapidjson-devel
 BuildRequires:  zlib-devel
@@ -98,6 +102,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Sun Jun 16 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-2.20181013git4356376
+- Fedora 30 requires minizip-compat-devel.
+
 * Sun Jan 06 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-1.20181013git4356376
 - Update to latest snapshot.
 
