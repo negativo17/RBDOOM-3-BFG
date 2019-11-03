@@ -1,20 +1,25 @@
-%global commit0 435637606d65efe1098683d133f348eb06f8b852
-%global date 20181013
+%global commit0 f18ccd63d6b2b6ddcf6265326ddd67dbc3f5f90d
+%global date 20191015
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+#global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.2.0
-Release:        2%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
 
+%if 0%{?tag:1}
+Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+%else
 Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+%endif
+
 Source1:        %{name}-README.txt
 Patch1:         %{name}-noexit.patch
 Patch2:         %{name}-png.patch
 Patch3:         %{name}-minizip.patch
-Patch4:         %{name}-README.patch
 
 ExcludeArch:    ppc64le
 
@@ -97,11 +102,14 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 
 %files
 %license COPYING.txt
-%doc Fedora-README.txt README.txt
+%doc Fedora-README.txt RELEASE-NOTES.txt README.txt
 %{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Sun Nov 03 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-3.20191026gitf18ccd6
+- Update snapshot to post 1.2.0-preview1 release.
+
 * Sun Jun 16 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-2.20181013git4356376
 - Fedora 30 requires minizip-compat-devel.
 
