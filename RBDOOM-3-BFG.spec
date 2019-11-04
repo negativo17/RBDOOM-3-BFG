@@ -5,7 +5,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.2.0
-Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        4%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -35,7 +35,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  chrpath
 BuildRequires:  cmake
 BuildRequires:  glew-devel
-BuildRequires:  libjpeg-turbo-devel
+BuildRequires:  libjpeg-turbo-devel >= 1.5.0
 BuildRequires:  libpng-devel
 %if 0%{?fedora} >= 30 || 0%{?rhel} >= 8
 BuildRequires:  minizip-compat-devel
@@ -46,6 +46,12 @@ BuildRequires:  openal-soft-devel
 BuildRequires:  rapidjson-devel
 BuildRequires:  zlib-devel
 BuildRequires:  SDL2-devel
+
+%if 0%{?rhel} == 7
+BuildRequires:  devtoolset-7-gcc-c++
+%else
+BuildRequires:  gcc-c++
+%endif
 
 %description
 %{name} is a Doom 3 BFG GPL source modification. The goal of %{name}
@@ -67,6 +73,10 @@ iconv -f iso8859-1 -t utf-8 COPYING.txt > COPYING.txt.conv && mv -f COPYING.txt.
 echo "#define ID_RETAIL" >> neo/framework/Licensee.h
 
 %build
+%if 0%{?rhel} == 7
+. /opt/rh/devtoolset-7/enable
+%endif
+
 LDFLAGS='-lpthread'
 # Passing a fake build name avoids default CMAKE_BUILD_TYPE="RelWithDebInfo"
 # which has hard coded GCC optimizations.
@@ -107,6 +117,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Mon Nov 04 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-4.20191015gitf18ccd6
+- Fix build on RHEL/CentOS 7.
+
 * Sun Nov 03 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-3.20191026gitf18ccd6
 - Update snapshot to post 1.2.0-preview1 release.
 
