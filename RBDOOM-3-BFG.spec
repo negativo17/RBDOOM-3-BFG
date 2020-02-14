@@ -1,11 +1,11 @@
-%global commit0 f18ccd63d6b2b6ddcf6265326ddd67dbc3f5f90d
-%global date 20191015
+%global commit0 bce8237dc195d95c9eff859c63d1764412add25c
+%global date 20200202
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.2.0
-Release:        4%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        5%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -20,6 +20,7 @@ Source1:        %{name}-README.txt
 Patch1:         %{name}-noexit.patch
 Patch2:         %{name}-png.patch
 Patch3:         %{name}-minizip.patch
+Patch4:         %{name}-imgui.patch
 
 ExcludeArch:    ppc64le
 
@@ -111,12 +112,15 @@ install -D -p -m 0755 idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
 chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 
 %files
-%license COPYING.txt
-%doc Fedora-README.txt RELEASE-NOTES.txt README.txt
+%license LICENSE.md
+%doc Fedora-README.txt RELEASE-NOTES.md README.md
 %{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Fri Feb 14 2020 Simone Caronni <negativo17@gmail.com> - 1.2.0-5.20200202gitbce8237
+- Update to latest snapshot.
+
 * Mon Nov 04 2019 Simone Caronni <negativo17@gmail.com> - 1.2.0-4.20191015gitf18ccd6
 - Fix build on RHEL/CentOS 7.
 

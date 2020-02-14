@@ -1,0 +1,24 @@
+diff -Naur RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c.old/neo/imgui/BFGimgui.h RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c/neo/imgui/BFGimgui.h
+--- RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c.old/neo/imgui/BFGimgui.h	2020-02-14 13:54:57.158022180 +0100
++++ RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c/neo/imgui/BFGimgui.h	2020-02-14 13:55:57.453088428 +0100
+@@ -2,7 +2,7 @@
+ #ifndef NEO_IMGUI_BFGIMGUI_H_
+ #define NEO_IMGUI_BFGIMGUI_H_
+ 
+-#include "../../libs/imgui/imgui.h"
++#include "../libs/imgui/imgui.h"
+ 
+ #include "../idlib/math/Vector.h"
+ 
+diff -Naur RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c.old/neo/renderer/Image_intrinsic.cpp RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c/neo/renderer/Image_intrinsic.cpp
+--- RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c.old/neo/renderer/Image_intrinsic.cpp	2020-02-14 13:54:57.195022835 +0100
++++ RBDOOM-3-BFG-bce8237dc195d95c9eff859c63d1764412add25c/neo/renderer/Image_intrinsic.cpp	2020-02-14 13:55:57.453088428 +0100
+@@ -30,7 +30,7 @@
+ #pragma hdrstop
+ #include "precompiled.h"
+ 
+-#include "../../libs/imgui/imgui.h"
++#include "../libs/imgui/imgui.h"
+ 
+ #include "RenderCommon.h"
+ #include "SMAA/AreaTex.h"
