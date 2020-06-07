@@ -36,7 +36,7 @@ BuildRequires:  cmake
 BuildRequires:  glew-devel
 BuildRequires:  libjpeg-turbo-devel >= 1.5.0
 BuildRequires:  libpng-devel
-%if 0%{?fedora} >= 30 || 0%{?rhel} >= 8
+%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  minizip-compat-devel
 %else
 BuildRequires:  minizip-devel
