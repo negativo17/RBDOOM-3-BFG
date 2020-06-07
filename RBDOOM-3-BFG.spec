@@ -1,11 +1,11 @@
-%global commit0 bce8237dc195d95c9eff859c63d1764412add25c
-%global date 20200202
+%global commit0 c0e76c492a0a13b308ac57edb222be070d21db2a
+%global date 20200531
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.2.0
-Release:        5%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        6%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -18,9 +18,7 @@ Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{commit0}.ta
 
 Source1:        %{name}-README.txt
 Patch1:         %{name}-noexit.patch
-Patch2:         %{name}-png.patch
-Patch3:         %{name}-minizip.patch
-Patch4:         %{name}-imgui.patch
+Patch2:         %{name}-minizip.patch
 
 ExcludeArch:    ppc64le
 
@@ -49,7 +47,7 @@ BuildRequires:  zlib-devel
 BuildRequires:  SDL2-devel
 
 %if 0%{?rhel} == 7
-BuildRequires:  devtoolset-7-gcc-c++
+BuildRequires:  devtoolset-8-gcc-c++
 %else
 BuildRequires:  gcc-c++
 %endif
@@ -68,14 +66,12 @@ rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
 
 cp %{SOURCE1} ./Fedora-README.txt
 
-iconv -f iso8859-1 -t utf-8 COPYING.txt > COPYING.txt.conv && mv -f COPYING.txt.conv COPYING.txt
-
 # Disable level selection menu
 echo "#define ID_RETAIL" >> neo/framework/Licensee.h
 
 %build
 %if 0%{?rhel} == 7
-. /opt/rh/devtoolset-7/enable
+. /opt/rh/devtoolset-8/enable
 %endif
 
 LDFLAGS='-lpthread'
@@ -118,6 +114,10 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Sun Jun 07 2020 Simone Caronni <negativo17@gmail.com> - 1.2.0-6.20200531gitc0e76c4
+- Update to latest snapshot, drop no longer required patches.
+- Switch to GCC 8 for EL7.
+
 * Fri Feb 14 2020 Simone Caronni <negativo17@gmail.com> - 1.2.0-5.20200202gitbce8237
 - Update to latest snapshot.
 

@@ -1,13 +1,13 @@
-diff -Naur RBDoom3BFG.old/neo/idlib/Thread.cpp RBDoom3BFG/neo/idlib/Thread.cpp
---- RBDoom3BFG.old/neo/idlib/Thread.cpp	2013-11-15 16:50:34.532416813 +0100
-+++ RBDoom3BFG/neo/idlib/Thread.cpp	2013-11-15 17:32:25.425805095 +0100
+diff -Naur RBDOOM-3-BFG-c0e76c492a0a13b308ac57edb222be070d21db2a.old/neo/idlib/Thread.cpp RBDOOM-3-BFG-c0e76c492a0a13b308ac57edb222be070d21db2a/neo/idlib/Thread.cpp
+--- RBDOOM-3-BFG-c0e76c492a0a13b308ac57edb222be070d21db2a.old/neo/idlib/Thread.cpp	2020-06-07 14:42:06.031990833 +0200
++++ RBDOOM-3-BFG-c0e76c492a0a13b308ac57edb222be070d21db2a/neo/idlib/Thread.cpp	2020-06-07 14:43:10.377116381 +0200
 @@ -249,9 +249,6 @@
  	catch( idException& ex )
  	{
  		idLib::Warning( "Fatal error in thread %s: %s", thread->GetName(), ex.GetError() );
--		
+-
 -		// We don't handle threads terminating unexpectedly very well, so just terminate the whole process
 -		exit( 0 );
  	}
- 	
+ 
  	thread->isRunning = false;
