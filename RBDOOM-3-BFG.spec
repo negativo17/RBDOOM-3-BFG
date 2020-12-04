@@ -1,11 +1,13 @@
-%global commit0 c0e76c492a0a13b308ac57edb222be070d21db2a
-%global date 20200531
+%global __cmake_in_source_build 1
+
+%global commit0 05a3e049c5d2fb7f58eafcc90fee3cdba969fd85
+%global date 20201126
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.2.0
-Release:        6%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        7%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -36,21 +38,11 @@ BuildRequires:  cmake
 BuildRequires:  glew-devel
 BuildRequires:  libjpeg-turbo-devel >= 1.5.0
 BuildRequires:  libpng-devel
-%if 0%{?fedora} || 0%{?rhel} >= 8
 BuildRequires:  minizip-compat-devel
-%else
-BuildRequires:  minizip-devel
-%endif
 BuildRequires:  openal-soft-devel
 BuildRequires:  rapidjson-devel
 BuildRequires:  zlib-devel
 BuildRequires:  SDL2-devel
-
-%if 0%{?rhel} == 7
-BuildRequires:  devtoolset-8-gcc-c++
-%else
-BuildRequires:  gcc-c++
-%endif
 
 %description
 %{name} is a Doom 3 BFG GPL source modification. The goal of %{name}
@@ -70,17 +62,12 @@ cp %{SOURCE1} ./Fedora-README.txt
 echo "#define ID_RETAIL" >> neo/framework/Licensee.h
 
 %build
-%if 0%{?rhel} == 7
-. /opt/rh/devtoolset-8/enable
-%endif
-
 LDFLAGS='-lpthread'
 # Passing a fake build name avoids default CMAKE_BUILD_TYPE="RelWithDebInfo"
 # which has hard coded GCC optimizations.
-
 %cmake \
     -DCMAKE_BUILD_TYPE=Fedora \
-    -DBINKDEC=ON \
+    -DBINKDEC=ON -DFFMPEG=OFF \
     -DOPENAL=ON \
     -DUSE_PRECOMPILED_HEADERS=OFF \
     -DUSE_SYSTEM_LIBGLEW=ON \
@@ -114,6 +101,10 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Fri Dec 04 2020 Simone Caronni <negativo17@gmail.com> - 1.2.0-7.20201126git05a3e04
+- Update to latest snapshot.
+- Drop suppport for CentOS/RHEL 7.
+
 * Sun Jun 07 2020 Simone Caronni <negativo17@gmail.com> - 1.2.0-6.20200531gitc0e76c4
 - Update to latest snapshot, drop no longer required patches.
 - Switch to GCC 8 for EL7.
