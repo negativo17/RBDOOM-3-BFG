@@ -58,11 +58,12 @@ rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
 
 cp %{SOURCE1} ./Fedora-README.txt
 
-# Disable level selection menu
-echo "#define ID_RETAIL" >> neo/framework/Licensee.h
-
 %build
+# Uncomment this to disable console and dev menu
+#CXXFLAGS='%{optflags} -DID_RETAIL'
+
 LDFLAGS='-lpthread'
+
 # Passing a fake build name avoids default CMAKE_BUILD_TYPE="RelWithDebInfo"
 # which has hard coded GCC optimizations.
 %cmake \
