@@ -1,13 +1,13 @@
 %global __cmake_in_source_build 1
 
-%global commit0 87bbebac1c87043ee9622152c24bca4690467123
-%global date 20210828
+%global commit0 cbf17d4f36c7e69a04f23bd02b2f6296f40db5c4
+%global date 20210911
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.3.0
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -102,6 +102,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Fri Sep 17 2021 Simone Caronni <negativo17@gmail.com> - 1.3.0-3.20210911gitcbf17d4
+- Update to latest snapshot.
+
 * Thu Sep 09 2021 Simone Caronni <negativo17@gmail.com> - 1.3.0-2.20210828git87bbeba
 - Update to latest snapsthot.
 
