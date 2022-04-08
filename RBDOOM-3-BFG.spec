@@ -1,19 +1,19 @@
 %global __cmake_in_source_build 1
 
-%global commit0 bf44cd059ecf88ac57680efc19a0e3444a37b5de
-%global date 20211001
+%global commit0 f81a8c1dd9b762774a233ba071837b2c7a374751
+%global date 20220306
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global tag %{version}
 
 Name:           RBDOOM-3-BFG
-Version:        1.3.0
-Release:        4%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Version:        1.4.0
+Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
 
 %if 0%{?tag:1}
-Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/RobertBeckebans/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 %else
 Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 %endif
@@ -51,7 +51,11 @@ present in the original DOOM 3 will be fixed (when identified) without altering
 the original game-play.
 
 %prep
+%if 0%{?tag:1}
+%autosetup -p1
+%else
 %autosetup -p1 -n %{name}-%{commit0}
+%endif
 
 # Remove bundled libraries
 rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
@@ -102,6 +106,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Fri Apr 08 2022 Simone Caronni <negativo17@gmail.com> - 1.4.0-1
+- Update to final 1.4.0.
+
 * Mon Oct 04 2021 Simone Caronni <negativo17@gmail.com> - 1.3.0-4.20211001gitbf44cd0
 - Update snapshot.
 
