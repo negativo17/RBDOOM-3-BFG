@@ -1,7 +1,7 @@
-diff -Naur RBDOOM-3-BFG-1.4.0.old/neo/CMakeLists.txt RBDOOM-3-BFG-1.4.0/neo/CMakeLists.txt
---- RBDOOM-3-BFG-1.4.0.old/neo/CMakeLists.txt	2022-04-08 09:31:09.199187264 +0200
-+++ RBDOOM-3-BFG-1.4.0/neo/CMakeLists.txt	2022-04-08 09:31:27.388500044 +0200
-@@ -1657,6 +1657,7 @@
+diff -Naur RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5.old/neo/CMakeLists.txt RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5/neo/CMakeLists.txt
+--- RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5.old/neo/CMakeLists.txt	2023-03-15 10:48:25.862916983 +0100
++++ RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5/neo/CMakeLists.txt	2023-03-15 10:49:17.722803822 +0100
+@@ -1612,6 +1612,7 @@
  		dbghelp
  		#eaxguid
  		iphlpapi
@@ -9,17 +9,17 @@ diff -Naur RBDOOM-3-BFG-1.4.0.old/neo/CMakeLists.txt RBDOOM-3-BFG-1.4.0/neo/CMak
  		winmm
  		wsock32.lib
  		${Vulkan_LIBRARIES}
-@@ -1858,6 +1859,7 @@
- 			idlib
- 			${Vulkan_LIBRARIES}
- 			${OPENGL_LIBRARIES}
-+            minizip
+@@ -1817,6 +1818,7 @@
+ 			${Vulkan_LIBRARY}
+ 			#${OPENGL_LIBRARIES}
  			pthread
++            minizip
  			${RT_LIBRARY}
  			${SDLx_LIBRARY}
-diff -Naur RBDOOM-3-BFG-1.4.0.old/neo/framework/Unzip.h RBDOOM-3-BFG-1.4.0/neo/framework/Unzip.h
---- RBDOOM-3-BFG-1.4.0.old/neo/framework/Unzip.h	2022-04-08 09:31:09.212187487 +0200
-+++ RBDOOM-3-BFG-1.4.0/neo/framework/Unzip.h	2022-04-08 09:31:27.388500044 +0200
+ 			${OPENAL_LIBRARY}
+diff -Naur RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5.old/neo/framework/Unzip.h RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5/neo/framework/Unzip.h
+--- RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5.old/neo/framework/Unzip.h	2023-03-15 10:48:25.890917461 +0100
++++ RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5/neo/framework/Unzip.h	2023-03-15 10:48:50.720342060 +0100
 @@ -37,14 +37,6 @@
  #ifndef __UNZIP_H__
  #define __UNZIP_H__
@@ -36,9 +36,9 @@ diff -Naur RBDOOM-3-BFG-1.4.0.old/neo/framework/Unzip.h RBDOOM-3-BFG-1.4.0/neo/f
 +#include <minizip/unzip.h>
  
  #endif /* __UNZIP_H__ */
-diff -Naur RBDOOM-3-BFG-1.4.0.old/neo/framework/Zip.h RBDOOM-3-BFG-1.4.0/neo/framework/Zip.h
---- RBDOOM-3-BFG-1.4.0.old/neo/framework/Zip.h	2022-04-08 09:31:09.212187487 +0200
-+++ RBDOOM-3-BFG-1.4.0/neo/framework/Zip.h	2022-04-08 09:31:27.389500061 +0200
+diff -Naur RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5.old/neo/framework/Zip.h RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5/neo/framework/Zip.h
+--- RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5.old/neo/framework/Zip.h	2023-03-15 10:48:25.891917478 +0100
++++ RBDOOM-3-BFG-a5a6bf0e33d985a2af47b8db2a000200617179c5/neo/framework/Zip.h	2023-03-15 10:48:51.581356784 +0100
 @@ -30,9 +30,8 @@
  
  #include <zlib.h>

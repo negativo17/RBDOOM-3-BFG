@@ -1,12 +1,10 @@
-%global __cmake_in_source_build 1
-
-%global commit0 f81a8c1dd9b762774a233ba071837b2c7a374751
-%global date 20220306
+%global commit0 33b54481d1c866932ee7abce961d6087e80998f5
+%global date 20230330
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global tag %{version}
+#global tag %{version}
 
 Name:           RBDOOM-3-BFG
-Version:        1.4.0
+Version:        1.5.0
 Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
@@ -72,7 +70,8 @@ LDFLAGS='-lpthread'
 # which has hard coded GCC optimizations.
 %cmake \
     -DCMAKE_BUILD_TYPE=Fedora \
-    -DBINKDEC=ON -DFFMPEG=OFF \
+    -DBINKDEC=ON \
+    -DFFMPEG=OFF \
     -DOPENAL=ON \
     -DUSE_PRECOMPILED_HEADERS=OFF \
     -DUSE_SYSTEM_LIBGLEW=ON \
@@ -106,6 +105,9 @@ chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
 
 %changelog
+* Sun Apr 02 2023 Simone Caronni <negativo17@gmail.com> - 1.5.0-1.20230330git33b5448
+- Update to latest snapshot.
+
 * Fri Apr 08 2022 Simone Caronni <negativo17@gmail.com> - 1.4.0-1
 - Update to final 1.4.0.
 
