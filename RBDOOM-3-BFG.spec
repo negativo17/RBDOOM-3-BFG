@@ -14,7 +14,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.5.0
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -113,20 +113,29 @@ if [ "$1" = 0 ]; then
 fi
 
 %install
+install -D -p -m 0755 %{_vpath_builddir}/RBDoom3BFG %{buildroot}%{_bindir}/RBDoom3BFG
+
 # The library is loaded at runtime only and is expected with exactly this name;
 # so no ldconfig for it; much like a plugin. We can also then remove RPATH from
 # the main binary.
-install -D -p -m 0755 %{_vpath_builddir}/RBDoom3BFG %{buildroot}%{_bindir}/RBDoom3BFG
 install -D -p -m 0755 %{_vpath_builddir}/idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
 chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
+
+# Shaders
+mkdir -p %{buildroot}%{_datadir}/doom3bfg
+cp -av base %{buildroot}%{_datadir}/doom3bfg/
 
 %files
 %license LICENSE.md
 %doc Fedora-README.txt RELEASE-NOTES.md README.md
 %{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
+%{_datadir}/doom3bfg
 
 %changelog
+* Tue Apr 04 2023 Simone Caronni <negativo17@gmail.com> - 1.5.0-3.20230402git1d36dcf
+- Add additional Doom 3 BFG custom resources.
+
 * Mon Apr 03 2023 Simone Caronni <negativo17@gmail.com> - 1.5.0-2.20230402git1d36dcf
 - Update to latest snapshot.
 
