@@ -1,5 +1,3 @@
-%global __cmake_in_source_build 1
-
 %global commit0 f81a8c1dd9b762774a233ba071837b2c7a374751
 %global date 20220306
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
@@ -7,7 +5,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.4.0
-Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -63,8 +61,8 @@ rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
 cp %{SOURCE1} ./Fedora-README.txt
 
 %build
-# Uncomment this to disable console and dev menu
-#CXXFLAGS='%{optflags} -DID_RETAIL'
+# Use this to disable console and dev menu:
+CXXFLAGS='%{optflags} -DID_RETAIL'
 
 LDFLAGS='-lpthread'
 
@@ -72,7 +70,8 @@ LDFLAGS='-lpthread'
 # which has hard coded GCC optimizations.
 %cmake \
     -DCMAKE_BUILD_TYPE=Fedora \
-    -DBINKDEC=ON -DFFMPEG=OFF \
+    -DBINKDEC=ON \
+    -DFFMPEG=OFF \
     -DOPENAL=ON \
     -DUSE_PRECOMPILED_HEADERS=OFF \
     -DUSE_SYSTEM_LIBGLEW=ON \
@@ -81,7 +80,8 @@ LDFLAGS='-lpthread'
     -DUSE_SYSTEM_RAPIDJSON=ON \
     -DUSE_SYSTEM_ZLIB=ON \
     neo
-%make_build
+
+%cmake_build
 
 %post
 /usr/sbin/alternatives --install %{_bindir}/doom3bfg-engine doom3bfg-engine %{_bindir}/RBDoom3BFG 10
@@ -92,20 +92,31 @@ if [ "$1" = 0 ]; then
 fi
 
 %install
+install -D -p -m 0755 %{_vpath_builddir}/RBDoom3BFG %{buildroot}%{_bindir}/RBDoom3BFG
+
 # The library is loaded at runtime only and is expected with exactly this name;
 # so no ldconfig for it; much like a plugin. We can also then remove RPATH from
 # the main binary.
-install -D -p -m 0755 RBDoom3BFG %{buildroot}%{_bindir}/RBDoom3BFG
-install -D -p -m 0755 idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
+install -D -p -m 0755 %{_vpath_builddir}/idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
 chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
+
+# Additional resources
+mkdir -p %{buildroot}%{_datadir}/doom3bfg
+cp -av base %{buildroot}%{_datadir}/doom3bfg/
 
 %files
 %license LICENSE.md
 %doc Fedora-README.txt RELEASE-NOTES.md README.md
 %{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
+%{_datadir}/doom3bfg
 
 %changelog
+
+* Tue Apr 04 2023 Simone Caronni <negativo17@gmail.com> - 1.4.0-2
+- Add additional Doom 3 BFG custom resources.
+- Disable DEV menu.
+
 * Fri Apr 08 2022 Simone Caronni <negativo17@gmail.com> - 1.4.0-1
 - Update to final 1.4.0.
 
