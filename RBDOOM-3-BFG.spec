@@ -1,5 +1,5 @@
-#global tag %{version}
-%global date 20230402
+%global tag %{version}
+#global date 20230402
 
 %global commit0 1d36dcf1a4f15f52ec59ca82f2643c992ad58146
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
@@ -13,8 +13,8 @@
 %global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
 
 Name:           RBDOOM-3-BFG
-Version:        1.5.0
-Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Version:        1.5.1
+Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -133,6 +133,9 @@ cp -av base %{buildroot}%{_datadir}/doom3bfg/
 %{_datadir}/doom3bfg
 
 %changelog
+* Thu Jun 22 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-1
+- Update to final 1.5.1.
+
 * Tue Apr 04 2023 Simone Caronni <negativo17@gmail.com> - 1.5.0-3.20230402git1d36dcf
 - Add additional Doom 3 BFG custom resources.
 
