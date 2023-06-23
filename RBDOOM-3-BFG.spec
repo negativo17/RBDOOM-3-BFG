@@ -1,11 +1,20 @@
-%global commit0 f81a8c1dd9b762774a233ba071837b2c7a374751
-%global date 20220306
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global tag %{version}
+#global date 20230402
+
+%global commit0 1d36dcf1a4f15f52ec59ca82f2643c992ad58146
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global commit1 1cbc9e9d16f997948c429739b1a1886fb4d0c796
+%global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
+%global commit2 799a918af94000d22828125d46aefd6ecd947e8d
+%global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
+%global commit3 0193e158bc9f4d17e3c3a61c9311a0439ed5572d
+%global shortcommit3 %(c=%{commit3}; echo ${c:0:7})
+%global commit4 302302b30839505703d37fb82f536c53cf9172fa
+%global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
 
 Name:           RBDOOM-3-BFG
-Version:        1.4.0
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Version:        1.5.1
+Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -15,8 +24,12 @@ Source0:        https://github.com/RobertBeckebans/%{name}/archive/v%{version}.t
 %else
 Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 %endif
+Source1:        https://github.com/RobertBeckebans/nvrhi/archive/%{commit1}.tar.gz#/nvrhi-%{shortcommit1}.tar.gz
+Source2:        https://github.com/NVIDIAGameWorks/RTXMU/archive/%{commit2}.tar.gz#/RTXMU-%{shortcommit2}.tar.gz
+Source3:        https://github.com/KhronosGroup/Vulkan-Headers/archive/%{commit3}.tar.gz#/Vulkan-Headers-%{shortcommit3}.tar.gz
+Source4:        https://github.com/jarro2783/cxxopts/archive/%{commit4}.tar.gz#/cxxopts-%{shortcommit4}.tar.gz
 
-Source1:        %{name}-README.txt
+Source10:       %{name}-README.txt
 Patch1:         %{name}-noexit.patch
 Patch2:         %{name}-minizip.patch
 
@@ -30,6 +43,7 @@ Provides:       doom3bfg-engine = 1.1401
 Provides:       bundled(timidity) = 0.2i
 Provides:       bundled(libbinkdec)
 
+BuildRequires:  dxc
 BuildRequires:  gcc-c++
 BuildRequires:  chrpath
 BuildRequires:  cmake
@@ -41,6 +55,7 @@ BuildRequires:  openal-soft-devel
 BuildRequires:  rapidjson-devel
 BuildRequires:  zlib-devel
 BuildRequires:  SDL2-devel
+BuildRequires:  vulkan-loader-devel
 
 %description
 %{name} is a Doom 3 BFG GPL source modification. The goal of %{name}
@@ -55,13 +70,18 @@ the original game-play.
 %autosetup -p1 -n %{name}-%{commit0}
 %endif
 
-# Remove bundled libraries
-rm -fr neo/libs/{glew,jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
+tar -xzf %{SOURCE1} --strip-components=1 -C neo/extern/nvrhi
+tar -xzf %{SOURCE2} --strip-components=1 -C neo/extern/nvrhi/rtxmu
+tar -xzf %{SOURCE3} --strip-components=1 -C neo/extern/nvrhi/thirdparty/Vulkan-Headers
+tar -xzf %{SOURCE4} --strip-components=1 -C neo/extern/nvrhi/thirdparty/cxxopts
 
-cp %{SOURCE1} ./Fedora-README.txt
+# Remove bundled libraries
+rm -fr neo/libs/{jpeg-6,openal-soft,ffmpeg*,png,rapidjson,zlib}
+
+cp %{SOURCE10} ./Fedora-README.txt
 
 %build
-# Use this to disable console and dev menu:
+# Uncomment this to disable console and dev menu
 CXXFLAGS='%{optflags} -DID_RETAIL'
 
 LDFLAGS='-lpthread'
@@ -79,6 +99,7 @@ LDFLAGS='-lpthread'
     -DUSE_SYSTEM_LIBPNG=ON \
     -DUSE_SYSTEM_RAPIDJSON=ON \
     -DUSE_SYSTEM_ZLIB=ON \
+    -DUSE_VULKAN=ON \
     neo
 
 %cmake_build
@@ -100,7 +121,7 @@ install -D -p -m 0755 %{_vpath_builddir}/RBDoom3BFG %{buildroot}%{_bindir}/RBDoo
 install -D -p -m 0755 %{_vpath_builddir}/idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
 chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
 
-# Additional resources
+# Shaders
 mkdir -p %{buildroot}%{_datadir}/doom3bfg
 cp -av base %{buildroot}%{_datadir}/doom3bfg/
 
@@ -112,6 +133,8 @@ cp -av base %{buildroot}%{_datadir}/doom3bfg/
 %{_datadir}/doom3bfg
 
 %changelog
+* Thu Jun 22 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-1
+- Update to final 1.5.1.
 
 * Tue Apr 04 2023 Simone Caronni <negativo17@gmail.com> - 1.4.0-2
 - Add additional Doom 3 BFG custom resources.
