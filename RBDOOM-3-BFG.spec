@@ -1,3 +1,5 @@
+%undefine       __cmake_in_source_build
+
 %global tag %{version}
 #global date 20230402
 
