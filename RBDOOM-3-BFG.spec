@@ -1,7 +1,7 @@
-%global tag %{version}
-#global date 20230402
+#global tag %{version}
+%global date 20230714
 
-%global commit0 1d36dcf1a4f15f52ec59ca82f2643c992ad58146
+%global commit0 a51833e4edca5bd649e10b1367fd4990e64e2dd0
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global commit1 1cbc9e9d16f997948c429739b1a1886fb4d0c796
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
@@ -14,7 +14,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.5.1
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        4%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -32,7 +32,6 @@ Source4:        https://github.com/jarro2783/cxxopts/archive/%{commit4}.tar.gz#/
 Source10:       %{name}-README.txt
 Patch1:         %{name}-noexit.patch
 Patch2:         %{name}-minizip.patch
-Patch3:         https://patch-diff.githubusercontent.com/raw/RobertBeckebans/RBDOOM-3-BFG/pull/787.patch
 
 ExcludeArch:    ppc64le
 
@@ -134,6 +133,9 @@ cp -av base %{buildroot}%{_datadir}/doom3bfg/
 %{_datadir}/doom3bfg
 
 %changelog
+* Tue Aug 08 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-4.20230714gita51833e
+- Update to latest snapshot.
+
 * Sun Jul 02 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-2
 - Fix game not being able to restart.
 
