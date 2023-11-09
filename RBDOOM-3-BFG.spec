@@ -1,20 +1,25 @@
 #global tag %{version}
-%global date 20230714
+%global date 20231018
 
-%global commit0 a51833e4edca5bd649e10b1367fd4990e64e2dd0
+%global commit0 b04705c59441a3cab73c981ae018a198939a5e90
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+# https://github.com/RobertBeckebans/RBDOOM-3-BFG/tree/master/neo/extern
 %global commit1 1cbc9e9d16f997948c429739b1a1886fb4d0c796
 %global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
+# From the checkout above
+# rtxmu
 %global commit2 799a918af94000d22828125d46aefd6ecd947e8d
 %global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
+# thirdparty/Vulkan-Headers
 %global commit3 0193e158bc9f4d17e3c3a61c9311a0439ed5572d
 %global shortcommit3 %(c=%{commit3}; echo ${c:0:7})
+# thirdparty/cxxopts
 %global commit4 302302b30839505703d37fb82f536c53cf9172fa
 %global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
 
 Name:           RBDOOM-3-BFG
 Version:        1.5.1
-Release:        4%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        5%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -133,6 +138,9 @@ cp -av base %{buildroot}%{_datadir}/doom3bfg/
 %{_datadir}/doom3bfg
 
 %changelog
+* Thu Nov 09 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-5.20231018gitb04705c
+- Update to latest snapshot.
+
 * Tue Aug 08 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-4.20230714gita51833e
 - Update to latest snapshot.
 
