@@ -1,22 +1,7 @@
-#global tag %{version}
-%global date 20240402
-
 %global commit0 18755609de07ab87dea78b8cd2650435909651a1
+%global date 20240402
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-# https://github.com/RobertBeckebans/RBDOOM-3-BFG/tree/master/neo/extern
-# ShaderMake
-%global commit1 13867771f6142f35690a5e2103c1e1efdd90cb0e
-%global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
-# nrhi
-%global commit2 13c24429b4bf3920519843431a43560bf3db11de
-%global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
-# From the checkout above
-# rtxmu
-%global commit3 c27b13ee5ff5966ac368df553f3b8b5d1272d855
-%global shortcommit3 %(c=%{commit3}; echo ${c:0:7})
-# thirdparty/Vulkan-Headers
-%global commit4 5a5c9a643484d888873e32c5d7d484fae8e71d3d
-%global shortcommit4 %(c=%{commit4}; echo ${c:0:7})
+#global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.6.0
@@ -28,12 +13,9 @@ URL:            https://github.com/RobertBeckebans/%{name}
 %if 0%{?tag:1}
 Source0:        https://github.com/RobertBeckebans/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 %else
-Source0:        https://github.com/RobertBeckebans/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:        %{name}-%{shortcommit0}.tar.xz
 %endif
-Source1:        https://github.com/RobertBeckebans/ShaderMake/archive/%{commit1}.tar.gz#/ShaderMake-%{shortcommit1}.tar.gz
-Source2:        https://github.com/RobertBeckebans/nvrhi/archive/%{commit2}.tar.gz#/nvrhi-%{shortcommit2}.tar.gz
-Source3:        https://github.com/NVIDIAGameWorks/RTXMU/archive/%{commit3}.tar.gz#/RTXMU-%{shortcommit3}.tar.gz
-Source4:        https://github.com/KhronosGroup/Vulkan-Headers/archive/%{commit4}.tar.gz#/Vulkan-Headers-%{shortcommit4}.tar.gz
+Source1:        %{name}-snapshot.sh
 
 Source10:       %{name}-README.txt
 Patch1:         %{name}-noexit.patch
@@ -74,11 +56,6 @@ the original game-play.
 %else
 %autosetup -p1 -n %{name}-%{commit0}
 %endif
-
-tar -xzf %{SOURCE1} --strip-components=1 -C neo/extern/ShaderMake
-tar -xzf %{SOURCE2} --strip-components=1 -C neo/extern/nvrhi
-tar -xzf %{SOURCE3} --strip-components=1 -C neo/extern/nvrhi/rtxmu
-tar -xzf %{SOURCE4} --strip-components=1 -C neo/extern/nvrhi/thirdparty/Vulkan-Headers
 
 cp %{SOURCE10} ./Fedora-README.txt
 
@@ -138,6 +115,7 @@ cp -av base %{buildroot}%{_datadir}/doom3bfg/
 * Sat Apr 06 2024 Simone Caronni <negativo17@gmail.com> - 1.6.0-1.20240402git1875560
 - Update to latest snapshot.
 - Drop system minizip patch.
+- Generate snapshot from a script to avoid checking Git commit IDs everywhere.
 
 * Thu Nov 09 2023 Simone Caronni <negativo17@gmail.com> - 1.5.1-5.20231018gitb04705c
 - Update to latest snapshot.
