@@ -1,0 +1,16 @@
+diff -Naur RBDOOM-3-BFG-747878eee1667dcd39fbd6420ba24fc0dc40b172.old/neo/CMakeLists.txt RBDOOM-3-BFG-747878eee1667dcd39fbd6420ba24fc0dc40b172/neo/CMakeLists.txt
+--- RBDOOM-3-BFG-747878eee1667dcd39fbd6420ba24fc0dc40b172.old/neo/CMakeLists.txt	2024-09-01 11:58:05.812553732 +0200
++++ RBDOOM-3-BFG-747878eee1667dcd39fbd6420ba24fc0dc40b172/neo/CMakeLists.txt	2024-09-01 11:59:25.589492561 +0200
+@@ -422,12 +422,6 @@
+ 
+ add_subdirectory(idlib)
+ 
+-# RB: there haven't been requests for a separate map compiler executable by macOS users
+-# and it is ok to not support it until someone also supports TrenchBroomBFG on macOS
+-if(NOT APPLE)
+-	add_subdirectory(tools/compilers)
+-endif()
+-
+ file(GLOB NATVIS_SOURCES .natvis)
+ 
+ file(GLOB AAS_INCLUDES aas/*.h)

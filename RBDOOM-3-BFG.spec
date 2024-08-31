@@ -18,7 +18,8 @@ Source0:        %{name}-%{shortcommit0}.tar.xz
 Source1:        %{name}-snapshot.sh
 
 Source10:       %{name}-README.txt
-Patch1:         %{name}-noexit.patch
+# Does not currently compile on Linux:
+Patch0:         %{name}-no-rbdmap.patch
 
 ExcludeArch:    ppc64le
 
@@ -37,7 +38,6 @@ BuildRequires:  cmake
 BuildRequires:  glew-devel
 BuildRequires:  libjpeg-turbo-devel >= 1.5.0
 BuildRequires:  libpng-devel
-BuildRequires:  minizip-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  openal-soft-devel
 BuildRequires:  rapidjson-devel
@@ -61,16 +61,13 @@ the original game-play.
 cp %{SOURCE10} ./Fedora-README.txt
 
 %build
-# Pass ID_RETAIL to disable console and dev menu
-CXXFLAGS='%{optflags} -DID_RETAIL'
-
-LDFLAGS='-lpthread'
-
 %cmake \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -G "Unix Makefiles" \
     -DBINKDEC=ON \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DFFMPEG=OFF \
     -DOPENAL=ON \
+    -DRETAIL=ON \
     -DUSE_PRECOMPILED_HEADERS=OFF \
     -DUSE_SYSTEM_LIBGLEW=ON \
     -DUSE_SYSTEM_LIBJPEG=ON \
@@ -111,9 +108,10 @@ cp -av base %{buildroot}%{_datadir}/doom3bfg/
 %{_datadir}/doom3bfg
 
 %changelog
-* Fri Aug 30 2024 Simone Caronni <negativo17@gmail.com> - 1.6.0-2.20240827git747878e
+* Sat Aug 31 2024 Simone Caronni <negativo17@gmail.com> - 1.6.0-2.20240827git747878e
 - Update to latest snapshot.
 - Trim changelog.
+- Adjust build options.
 
 * Sat Apr 06 2024 Simone Caronni <negativo17@gmail.com> - 1.6.0-1.20240402git1875560
 - Update to latest snapshot.
