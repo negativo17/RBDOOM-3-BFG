@@ -3,6 +3,10 @@
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 #global tag %{version}
 
+%if 0%{?rhel} == 8
+%undefine __cmake_in_source_build
+%endif
+
 Name:           RBDOOM-3-BFG
 Version:        1.6.0
 Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
