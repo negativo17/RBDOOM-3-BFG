@@ -1,15 +1,19 @@
-%global commit0 747878eee1667dcd39fbd6420ba24fc0dc40b172
-%global date 20240827
+%global commit0 b19eb88717fd54465814a3ae3b9086192c1912d9
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag %{version}
+%global date 20250123
 
-%if 0%{?rhel} == 8
-%undefine __cmake_in_source_build
-%endif
+# neo/extern/ShaderMake
+%global commit1 13867771f6142f35690a5e2103c1e1efdd90cb0e
+%global shortcommit1 %(c=%{commit1}; echo ${c:0:7})
+# neo/extern/nvrhi
+%global commit2 dafbd407f6fb8b91078da72ca1712dbbd6ac2496
+%global shortcommit2 %(c=%{commit2}; echo ${c:0:7})
+
+%global tag %{version}
 
 Name:           RBDOOM-3-BFG
 Version:        1.6.0
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -19,13 +23,12 @@ Source0:        https://github.com/RobertBeckebans/%{name}/archive/v%{version}.t
 %else
 Source0:        %{name}-%{shortcommit0}.tar.xz
 %endif
-Source1:        %{name}-snapshot.sh
+Source1:        https://github.com/RobertBeckebans/ShaderMake/archive/%{commit1}.tar.gz#/ShaderMake-%{shortcommit1}.tar.gz
+Source2:        https://github.com/RobertBeckebans/nvrhi/archive/%{commit2}.tar.gz#/nvrhi-%{shortcommit2}.tar.gz
 
 Source10:       %{name}-README.txt
 # Does not currently compile on Linux:
 Patch0:         %{name}-no-rbdmap.patch
-
-ExcludeArch:    ppc64le
 
 # Generic provider for Doom 3 BFG engine based games
 Provides:       doom3bfg-engine = 1.1401
@@ -36,12 +39,12 @@ Provides:       bundled(timidity) = 0.2i
 Provides:       bundled(libbinkdec)
 
 BuildRequires:  dxc
-BuildRequires:  gcc-c++
 BuildRequires:  chrpath
 BuildRequires:  cmake
+BuildRequires:  gcc-c++
 BuildRequires:  glew-devel
+BuildRequires:  ispc
 BuildRequires:  libjpeg-turbo-devel >= 1.5.0
-BuildRequires:  libpng-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  openal-soft-devel
 BuildRequires:  rapidjson-devel
@@ -62,7 +65,13 @@ the original game-play.
 %autosetup -p1 -n %{name}-%{commit0}
 %endif
 
+tar -xzf %{SOURCE1} --strip-components=1 -C neo/extern/ShaderMake
+tar -xzf %{SOURCE2} --strip-components=1 -C neo/extern/nvrhi
+
 cp %{SOURCE10} ./Fedora-README.txt
+
+rm -f idlib/precompiled.h.gch
+rm -f tools/compilers/precompiled.h.gch
 
 %build
 %cmake \
@@ -73,15 +82,15 @@ cp %{SOURCE10} ./Fedora-README.txt
     -DOPENAL=ON \
     -DRETAIL=ON \
     -DUSE_PRECOMPILED_HEADERS=OFF \
-    -DUSE_SYSTEM_LIBGLEW=ON \
-    -DUSE_SYSTEM_LIBJPEG=ON \
-    -DUSE_SYSTEM_LIBPNG=ON \
     -DUSE_SYSTEM_RAPIDJSON=ON \
     -DUSE_SYSTEM_ZLIB=ON \
     -DUSE_VULKAN=ON \
+    -DUSE_VMA=ON \
     neo
 
 %cmake_build
+
+chrpath -d %{_vpath_builddir}/RBDoom3BFG
 
 %post
 /usr/sbin/alternatives --install %{_bindir}/doom3bfg-engine doom3bfg-engine %{_bindir}/RBDoom3BFG 10
@@ -94,24 +103,31 @@ fi
 %install
 install -D -p -m 0755 %{_vpath_builddir}/RBDoom3BFG %{buildroot}%{_bindir}/RBDoom3BFG
 
-# The library is loaded at runtime only and is expected with exactly this name;
-# so no ldconfig for it; much like a plugin. We can also then remove RPATH from
-# the main binary.
-install -D -p -m 0755 %{_vpath_builddir}/idlib/libidlib.so %{buildroot}%{_libdir}/libidlib.so
-chrpath --delete %{buildroot}%{_bindir}/RBDoom3BFG
+mkdir -p %{buildroot}%{_libdir}/
+install -p -m 0755 \
+    %{_vpath_builddir}/idlib/libidlib.so \
+    %{_vpath_builddir}/libs/moc/libMaskedOcclusionCulling.so \
+    %{buildroot}%{_libdir}/
 
 # Shaders
 mkdir -p %{buildroot}%{_datadir}/doom3bfg
 cp -av base %{buildroot}%{_datadir}/doom3bfg/
+
+# Do not overwrite base configuration (one mouse button at the moment of writing this):
+rm -f %{buildroot}%{_datadir}/doom3bfg/base/default.cfg
 
 %files
 %license LICENSE.md
 %doc Fedora-README.txt RELEASE-NOTES.md README.md
 %{_bindir}/RBDoom3BFG
 %{_libdir}/libidlib.so
+%{_libdir}/libMaskedOcclusionCulling.so
 %{_datadir}/doom3bfg
 
 %changelog
+* Fri Jan 09 2026 Simone Caronni <negativo17@gmail.com> - 1.6.0-3
+- Update to final 1.6.0.
+
 * Sat Aug 31 2024 Simone Caronni <negativo17@gmail.com> - 1.6.0-2.20240827git747878e
 - Update to latest snapshot.
 - Trim changelog.
