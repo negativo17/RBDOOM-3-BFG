@@ -1,0 +1,92 @@
+--- RBDOOM-3-BFG-1.6.0.old/neo/framework/FileSystem.cpp	2025-05-10 18:14:11.000000000 +0200
++++ RBDOOM-3-BFG-1.6.0/neo/framework/FileSystem.cpp	2026-08-18 20:15:43.911209918 +0200
+@@ -302,6 +302,8 @@
+ 	void					ReplaceSeparators( idStr& path, char sep = PATHSEPARATOR_CHAR );
+ 	int						ListOSFiles( const char* directory, const char* extension, idStrList& list );
+ 	idFileHandle			OpenOSFile( const char* name, fsMode_t mode );
++	// redirect writes to fs_savepath if the given base path is read only
++	bool					SavePathFallback( const char* path, const char* relativePath, idStr& OSPath );
+ 	void					CloseOSFile( idFileHandle o );
+ 	int						DirectFileLength( idFileHandle o );
+ 	void					CopyFile( idFile* src, const char* toOSPath );
+@@ -3959,6 +3961,39 @@
+ 
+ /*
+ ===========
++idFileSystemLocal::SavePathFallback
++
++The base path is not necessarily writable. Linux distributions install the game
++data to a system wide location like /usr/share/doom3bfg while the engine still
++wants to write runtime generated content to it, e.g. the generated/ folder with
++the .bimage and .bmodel files, screenshots or exported assets.
++
++Rebuild the given relative path inside the user writable save path instead,
++which is ~/.local/share/rbdoom3bfg on Linux. The save path is added to the
++search paths after the base path, so the redirected files are found again with
++priority when they are read back.
++
++Returns false if there is no other path left to try.
++===========
++*/
++bool idFileSystemLocal::SavePathFallback( const char* path, const char* relativePath, idStr& OSPath )
++{
++	const char* savePath = fs_savepath.GetString();
++
++	if( !savePath[0] || idStr::Icmp( path, savePath ) == 0 )
++	{
++		return false;
++	}
++
++	OSPath = BuildOSPath( savePath, gameFolder, relativePath );
++
++	CreateOSPath( OSPath );
++
++	return true;
++}
++
++/*
++===========
+ idFileSystemLocal::OpenFileWrite
+ ===========
+ */
+@@ -3987,16 +4022,25 @@
+ 		common->Printf( "idFileSystem::OpenFileWrite: %s\n", OSpath.c_str() );
+ 	}
+ 
+-	common->DPrintf( "writing to: %s\n", OSpath.c_str() );
+ 	CreateOSPath( OSpath );
+ 
+ 	f = new( TAG_IDFILE ) idFile_Permanent();
+ 	f->o = OpenOSFile( OSpath, FS_WRITE );
++
++	// the base path can be read only, retry within the save path
++	if( !f->o && SavePathFallback( path, relativePath, OSpath ) )
++	{
++		f->o = OpenOSFile( OSpath, FS_WRITE );
++	}
++
+ 	if( !f->o )
+ 	{
+ 		delete f;
+ 		return NULL;
+ 	}
++
++	common->DPrintf( "writing to: %s\n", OSpath.c_str() );
++
+ 	f->name = relativePath;
+ 	f->fullPath = OSpath;
+ 	f->mode = ( 1 << FS_WRITE );
+@@ -4150,6 +4194,13 @@
+ 
+ 	f = new( TAG_IDFILE ) idFile_Permanent();
+ 	f->o = OpenOSFile( OSpath, FS_APPEND );
++
++	// the base path can be read only, retry within the save path
++	if( !f->o && SavePathFallback( path, relativePath, OSpath ) )
++	{
++		f->o = OpenOSFile( OSpath, FS_APPEND );
++	}
++
+ 	if( !f->o )
+ 	{
+ 		delete f;

@@ -1,6 +1,6 @@
-%global commit0 b19eb88717fd54465814a3ae3b9086192c1912d9
+%global commit0 0fc10ab97b26c0db0900b403e26d7e6b8f8baee1
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20250123
+%global date 20250614
 
 # neo/extern/ShaderMake
 %global commit1 13867771f6142f35690a5e2103c1e1efdd90cb0e
@@ -13,7 +13,7 @@
 
 Name:           RBDOOM-3-BFG
 Version:        1.6.0
-Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        4%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Robert Beckebans' Doom 3 BFG engine
 License:        GPLv3+ with exceptions
 URL:            https://github.com/RobertBeckebans/%{name}
@@ -21,7 +21,7 @@ URL:            https://github.com/RobertBeckebans/%{name}
 %if 0%{?tag:1}
 Source0:        https://github.com/RobertBeckebans/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 %else
-Source0:        %{name}-%{shortcommit0}.tar.xz
+Source0:        https://github.com/RobertBeckebans/RBDOOM-3-BFG/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 %endif
 Source1:        https://github.com/RobertBeckebans/ShaderMake/archive/%{commit1}.tar.gz#/ShaderMake-%{shortcommit1}.tar.gz
 Source2:        https://github.com/RobertBeckebans/nvrhi/archive/%{commit2}.tar.gz#/nvrhi-%{shortcommit2}.tar.gz
@@ -29,6 +29,9 @@ Source2:        https://github.com/RobertBeckebans/nvrhi/archive/%{commit2}.tar.
 Source10:       %{name}-README.txt
 # Does not currently compile on Linux:
 Patch0:         %{name}-no-rbdmap.patch
+# Do not write generated content into a read only base path:
+# https://github.com/RobertBeckebans/RBDOOM-3-BFG/issues/801
+Patch1:         %{name}-read-only-basepath.patch
 
 # Generic provider for Doom 3 BFG engine based games
 Provides:       doom3bfg-engine = 1.1401
@@ -125,8 +128,12 @@ rm -f %{buildroot}%{_datadir}/doom3bfg/base/default.cfg
 %{_datadir}/doom3bfg
 
 %changelog
+* Tue Aug 18 2026 Simone Caronni <negativo17@gmail.com> - 1.6.0-4
+- Fix game writing in install location.
+
 * Fri Jan 09 2026 Simone Caronni <negativo17@gmail.com> - 1.6.0-3
 - Update to final 1.6.0.
+- Fix game writing in install location.
 
 * Sat Aug 31 2024 Simone Caronni <negativo17@gmail.com> - 1.6.0-2.20240827git747878e
 - Update to latest snapshot.
